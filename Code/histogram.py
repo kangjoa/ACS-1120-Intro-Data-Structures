@@ -75,6 +75,8 @@ if __name__ == '__main__':
     # Create a histogram from a string or a file
     hist = histogram('source_text.txt')
 
+    print(histogram('corpus_sample.txt'))
+
     # Truncate the histogram to the first 5 items
     truncated_hist = truncate_histogram(hist, 5)
 
