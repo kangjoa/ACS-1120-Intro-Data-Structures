@@ -75,13 +75,6 @@ if __name__ == '__main__':
     # Create a histogram from a string or a file
     hist = histogram('source_text.txt')
 
-    # Using a different filename to make a histogram
-    with open('intermediate_hist.txt', 'r') as file:
-        text = file.read()
-
-    sampling_hist = histogram('intermediate_hist.txt')
-    print(f"Sample hist: {sampling_hist}")
-
     # Truncate the histogram to the first 5 items
     truncated_hist = truncate_histogram(hist, 5)
 
