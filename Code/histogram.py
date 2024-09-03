@@ -1,4 +1,4 @@
-def histogram(source_text: str) -> dict:
+def histogram(file_path: str) -> dict:
     """
     Creates a histogram from the given source text.
 
@@ -8,7 +8,7 @@ def histogram(source_text: str) -> dict:
     Returns:
         dict: A histogram where keys are words from the source text and values are the number of times each word appears.
     """
-    with open('source_text.txt', 'r') as file:
+    with open(file_path, 'r') as file:
         text = file.read()
 
     # Split text into a list of strings
@@ -74,6 +74,13 @@ def truncate_histogram(hist: dict, n: int) -> dict:
 if __name__ == '__main__':
     # Create a histogram from a string or a file
     hist = histogram('source_text.txt')
+
+    # Using a different filename to make a histogram
+    with open('intermediate_hist.txt', 'r') as file:
+        text = file.read()
+
+    sampling_hist = histogram('intermediate_hist.txt')
+    print(f"Sample hist: {sampling_hist}")
 
     # Truncate the histogram to the first 5 items
     truncated_hist = truncate_histogram(hist, 5)
