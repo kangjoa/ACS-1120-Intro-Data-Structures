@@ -25,6 +25,28 @@ def sample(hist: histogram) -> str:
     return random_word
 
 
+def tally_samples(hist: dict, num_samples: int) -> dict:
+    """
+    Takes a histogram and samples words a specified number of times, tallying the frequency of each word.
+
+    Args:
+        hist (dict): A histogram where keys are words and values are the number of times each word appears.
+        num_samples (int): The number of times to run the sample function.
+
+    Returns:
+        dict: A dictionary where keys are words and values are the number of times each word was sampled.
+    """
+    # Initialize a dictionary with all words/keys, set all counts/values to 0
+    tally = {word: 0 for word in hist.keys()}
+
+    # Sample the histogram num_samples times and tally the results
+    for _ in range(num_samples):
+        word = sample(hist)
+        tally[word] += 1
+
+    return tally
+
+
 if __name__ == '__main__':
     # Get the second word in the command line
     file_path = str(sys.argv[1])
@@ -37,3 +59,11 @@ if __name__ == '__main__':
 
     # Print the selected random word
     print(random_word_weighted)
+
+    # Sample the histogram n times and tally the results
+    n = 1000
+    tally = tally_samples(hist, n)
+
+    # Print the tally results
+    for word, count in tally.items():
+        print(f'{word}: {count/n}')
