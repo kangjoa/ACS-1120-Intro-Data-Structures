@@ -51,22 +51,62 @@ class LinkedList:
         return self.head is None
 
     def length(self):
-        """Return the length of this linked list by traversing its nodes.
-        TODO: Running time: O(n) Why and under what conditions?"""
+        """
+        Return the length of this linked list by traversing its nodes.
+        TODO: Running time: O(n) Why and under what conditions?
+        O(n) because the runtime is directly proportional to the input size (number of nodes in the linked list). We need to visit each node exactly once, so if we double the input size, we double the time to visit each node (aka traverse the list).
+        """
         # TODO: Loop through all nodes and count one for each
+        count = 0
+        curr = self.head
+
+        while curr is not None:
+            count += 1
+
+            # move pointer to next node (stay inside LL class)
+            curr = curr.next
+
+        return count
 
     def append(self, item):
-        """Insert the given item at the tail of this linked list.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        """
+        Insert the given item at the tail of this linked list.
+        TODO: Running time: O(1) Why and under what conditions?
+        O(1) because appending to the tail of the linked list takes constant time. We have direct access to the tail node, so no traversal is needed (we do not need to visit each node), and the time to insert the new node is the same, no matter the list length.
+        """
         # TODO: Create new node to hold given item
+        new_node = Node(item)
         # TODO: If self.is_empty() == True set the head and the tail to the new node
+        if self.is_empty():
+            self.head = new_node
+            self.tail = new_node
         # TODO: Else append node after tail
+        else:
+            # Take the current tail node and set its next to the new node and then set the tail to the new node
+            self.tail.next = new_node
+            self.tail = new_node
 
     def prepend(self, item):
-        """Insert the given item at the head of this linked list.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        """
+        Insert the given item at the head of this linked list.
+        TODO: Running time: O(1) Why and under what conditions?
+        O(1) because prepending to the head of the linked list takes constant time. We have direct access to the head node, so no traversal is needed (we do not need to visit each node), and the time to insert the new node is the same, no matter the list length.
+        """
         # TODO: Create new node to hold given item
+        new_node = Node(item)
+
+        # Store the current head
+        curr = self.head
+
         # TODO: Prepend node before head, if it exists
+        if self.head is not None:
+            # Make the new node the head of the list
+            self.head = new_node
+            # Link the new head's pointer to the old head so we don't lose it
+            self.head.next = curr
+        else:
+            self.head = new_node
+            self.tail = new_node
 
     def find(self, matcher):
         """Return an item from this linked list if it is present.
@@ -85,6 +125,21 @@ class LinkedList:
 
 
 def test_linked_list():
+    print("######################################################")
+    # Initialize a linked list with values
+    ll = LinkedList(['D', 'E', 'F', 'G'])
+
+    # print(f"print ll: {ll}")
+
+    # # Check the length of the list
+    # print('Length:', ll.length())
+    # print('should be 4')
+
+    # prepend a value
+    ll.prepend('C')
+    print('prepend C:', ll)
+    print("######################################################")
+
     ll = LinkedList()
     print('list: {}'.format(ll))
     print('\nTesting append:')
