@@ -54,7 +54,7 @@ class Dictogram(dict):
 
         # Use random.choices(), which allows weights
         random_word = random.choices(words, weights=frequencies, k=1)[0]
-        print(random_word)
+        # print(random_word)
         return random_word
 
 
