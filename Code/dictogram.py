@@ -21,15 +21,41 @@ class Dictogram(dict):
     def add_count(self, word, count=1):
         """Increase frequency count of given word by given count amount."""
         # TODO: Increase word frequency by count
+        if word in self:
+            # If the word is already in the histogram, increase its count
+            self[word] += count
+        else:
+            # If the word is new, add it to the histogram with its count
+            self[word] = count
+            # Increase the number of distinct word types
+            self.types += 1
+        # Increase the total token count
+        self.tokens += count
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
         # TODO: Retrieve word frequency count
+        # if word in self:
+        #     return self[word]
+        # else:
+        #     return 0
+        # Find the given word (key) and then return the associated value
+        return self.get(word, 0)
 
     def sample(self):
         """Return a word from this histogram, randomly sampled by weighting
         each word's probability of being chosen by its observed frequency."""
         # TODO: Randomly choose a word based on its frequency in this histogram
+        #  Get all the words (keys)
+        words = list(self.keys())
+
+        # Get all the weights (values/frequencies)
+        frequencies = list(self.values())
+
+        # Use random.choices(), which allows weights
+        random_word = random.choices(words, weights=frequencies, k=1)[0]
+        print(random_word)
+        return random_word
 
 
 def print_histogram(word_list):
@@ -74,11 +100,12 @@ def print_histogram_samples(histogram):
         sampled_freq = samples / samples_hist.tokens
         # Calculate error between word's sampled and observed frequency
         error = (sampled_freq - observed_freq) / observed_freq
-        color = green if abs(error) < 0.05 else yellow if abs(error) < 0.1 else red
+        color = green if abs(error) < 0.05 else yellow if abs(
+            error) < 0.1 else red
         print('| {!r:<9} '.format(word)
-            + '| {:>4} = {:>6.2%} '.format(count, observed_freq)
-            + '| {:>4} = {:>6.2%} '.format(samples, sampled_freq)
-            + '| {}{:>+7.2%}{} |'.format(color, error, reset))
+              + '| {:>4} = {:>6.2%} '.format(count, observed_freq)
+              + '| {:>4} = {:>6.2%} '.format(samples, sampled_freq)
+              + '| {}{:>+7.2%}{} |'.format(color, error, reset))
     print(divider)
     print()
 
