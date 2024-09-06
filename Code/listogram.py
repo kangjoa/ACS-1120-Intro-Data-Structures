@@ -21,10 +21,28 @@ class Listogram(list):
     def add_count(self, word, count=1):
         """Increase frequency count of given word by given count amount."""
         # TODO: Increase word frequency by count
+        # self is a list
+        # word_found = False
+        # index = 0
+
+        # for index, (existing_word, count) in enumerate(self):
+        #     if existing_word == word:
+        #         self[index] = (existing_word, count + 1)
+        #     if not word_found:
+        #         self.append((word, 1))
+        #         self.types += 1
+        #     self.tokens += 1
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
         # TODO: Retrieve word frequency count
+        # self = [['one', 1], ['fish', 4], ['two', 1], ['red', 1], ['blue', 1]]
+        for inner_list in self:
+            if inner_list[0] == word:
+                print(f"Found '{word}' with frequency {inner_list[1]}")
+                # Return the frequency (second element)
+                return inner_list[1]
+        return 0
 
     def __contains__(self, word):
         """Return boolean indicating if given word is in this histogram."""
@@ -83,32 +101,52 @@ def print_histogram_samples(histogram):
         sampled_freq = samples / samples_hist.tokens
         # Calculate error between word's sampled and observed frequency
         error = (sampled_freq - observed_freq) / observed_freq
-        color = green if abs(error) < 0.05 else yellow if abs(error) < 0.1 else red
+        color = green if abs(error) < 0.05 else yellow if abs(
+            error) < 0.1 else red
         print('| {!r:<9} '.format(word)
-            + '| {:>4} = {:>6.2%} '.format(count, observed_freq)
-            + '| {:>4} = {:>6.2%} '.format(samples, sampled_freq)
-            + '| {}{:>+7.2%}{} |'.format(color, error, reset))
+              + '| {:>4} = {:>6.2%} '.format(count, observed_freq)
+              + '| {:>4} = {:>6.2%} '.format(samples, sampled_freq)
+              + '| {}{:>+7.2%}{} |'.format(color, error, reset))
     print(divider)
     print()
 
 
 def main():
-    import sys
-    arguments = sys.argv[1:]  # Exclude script name in first argument
-    if len(arguments) >= 1:
-        # Test histogram on given arguments
-        print_histogram(arguments)
-    else:
-        # Test histogram on letters in a word
-        word = 'abracadabra'
-        print_histogram(list(word))
-        # Test histogram on words in a classic book title
-        fish_text = 'one fish two fish red fish blue fish'
-        print_histogram(fish_text.split())
-        # Test histogram on words in a long repetitive sentence
-        woodchuck_text = ('how much wood would a wood chuck chuck'
-                          ' if a wood chuck could chuck wood')
-        print_histogram(woodchuck_text.split())
+    print("#####################################################")
+    # Create an empty Listogram
+    histogram = Listogram()
+
+    # Add values to self
+    histogram.extend([['one', 1], ['fish', 4], [
+                     'two', 1], ['red', 1], ['blue', 1]])
+
+    # Test the frequency method
+    test_word = 'fish'
+    result = histogram.frequency(test_word)
+    print(f"Frequency of '{test_word}': {result}")
+
+    # Test a word that does not exist
+    test_word = 'shark'
+    result = histogram.frequency(test_word)
+    print(f"Frequency of '{test_word}': {result}")
+    print("#####################################################")
+
+    # import sys
+    # arguments = sys.argv[1:]  # Exclude script name in first argument
+    # if len(arguments) >= 1:
+    #     # Test histogram on given arguments
+    #     print_histogram(arguments)
+    # else:
+    #     # Test histogram on letters in a word
+    #     word = 'abracadabra'
+    #     print_histogram(list(word))
+    #     # Test histogram on words in a classic book title
+    #     fish_text = 'one fish two fish red fish blue fish'
+    #     print_histogram(fish_text.split())
+    #     # Test histogram on words in a long repetitive sentence
+    #     woodchuck_text = ('how much wood would a wood chuck chuck'
+    #                       ' if a wood chuck could chuck wood')
+    #     print_histogram(woodchuck_text.split())
 
 
 if __name__ == '__main__':
