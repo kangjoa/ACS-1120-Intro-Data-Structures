@@ -55,6 +55,11 @@ class Listogram(list):
         """Return the index of entry containing given target word if found in
         this histogram, or None if target word is not found."""
         # TODO: Implement linear search to find index of entry with target word
+        # Iterate over the list of first values and find the target
+        for index, inner_list in enumerate(self):
+            if inner_list[0] == target:
+                return index
+        return None
 
     def sample(self):
         """Return a word from this histogram, randomly sampled by weighting
@@ -140,6 +145,14 @@ def main():
     test_word = 'dino'
     contains_word = histogram.__contains__(test_word)
     print(f"Contains '{test_word}': {contains_word}, correct: False")
+
+    target = 'red'
+    index_of_target = histogram.index_of(target)
+    print(f"Contains '{target}': {index_of_target}, correct: 3")
+
+    target = 'penguin'
+    index_of_target = histogram.index_of(target)
+    print(f"Contains '{target}': {index_of_target}, correct: None")
     print("#####################################################")
 
     # import sys
