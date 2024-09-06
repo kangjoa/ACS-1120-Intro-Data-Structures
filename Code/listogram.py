@@ -22,16 +22,14 @@ class Listogram(list):
         """Increase frequency count of given word by given count amount."""
         # TODO: Increase word frequency by count
         # self is a list
-        # word_found = False
-        # index = 0
+        if word in self:
+            index = self.index_of(word)
+            self[index][1] += count
+        else:
+            self.append([word, count])
+            self.types += 1
 
-        # for index, (existing_word, count) in enumerate(self):
-        #     if existing_word == word:
-        #         self[index] = (existing_word, count + 1)
-        #     if not word_found:
-        #         self.append((word, 1))
-        #         self.types += 1
-        #     self.tokens += 1
+        self.tokens += 1
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
@@ -120,57 +118,57 @@ def print_histogram_samples(histogram):
 
 
 def main():
-    print("#####################################################")
-    # Create an empty Listogram
-    histogram = Listogram()
+    # print("#####################################################")
+    # # Create an empty Listogram
+    # histogram = Listogram()
 
-    # Add values to self
-    histogram.extend([['one', 1], ['fish', 4], [
-                     'two', 1], ['red', 1], ['blue', 1]])
+    # # Add values to self
+    # histogram.extend([['one', 1], ['fish', 4], [
+    #                  'two', 1], ['red', 1], ['blue', 1]])
 
-    # Test the frequency method
-    test_word = 'fish'
-    result = histogram.frequency(test_word)
-    print(f"Frequency of '{test_word}': {result}, correct: 4")
+    # # Test the frequency method
+    # test_word = 'fish'
+    # result = histogram.frequency(test_word)
+    # print(f"Frequency of '{test_word}': {result}, correct: 4")
 
-    # Test a word that does not exist
-    test_word = 'shark'
-    result = histogram.frequency(test_word)
-    print(f"Frequency of '{test_word}': {result}, correct: 0")
+    # # Test a word that does not exist
+    # test_word = 'shark'
+    # result = histogram.frequency(test_word)
+    # print(f"Frequency of '{test_word}': {result}, correct: 0")
 
-    test_word = 'fish'
-    contains_word = histogram.__contains__(test_word)
-    print(f"Contains '{test_word}': {contains_word}, correct: True")
+    # test_word = 'fish'
+    # contains_word = histogram.__contains__(test_word)
+    # print(f"Contains '{test_word}': {contains_word}, correct: True")
 
-    test_word = 'dino'
-    contains_word = histogram.__contains__(test_word)
-    print(f"Contains '{test_word}': {contains_word}, correct: False")
+    # test_word = 'dino'
+    # contains_word = histogram.__contains__(test_word)
+    # print(f"Contains '{test_word}': {contains_word}, correct: False")
 
-    target = 'red'
-    index_of_target = histogram.index_of(target)
-    print(f"Contains '{target}': {index_of_target}, correct: 3")
+    # target = 'red'
+    # index_of_target = histogram.index_of(target)
+    # print(f"Contains '{target}': {index_of_target}, correct: 3")
 
-    target = 'penguin'
-    index_of_target = histogram.index_of(target)
-    print(f"Contains '{target}': {index_of_target}, correct: None")
-    print("#####################################################")
+    # target = 'penguin'
+    # index_of_target = histogram.index_of(target)
+    # print(f"Contains '{target}': {index_of_target}, correct: None")
+    # print("#####################################################")
 
-    # import sys
-    # arguments = sys.argv[1:]  # Exclude script name in first argument
-    # if len(arguments) >= 1:
-    #     # Test histogram on given arguments
-    #     print_histogram(arguments)
-    # else:
-    #     # Test histogram on letters in a word
-    #     word = 'abracadabra'
-    #     print_histogram(list(word))
-    #     # Test histogram on words in a classic book title
-    #     fish_text = 'one fish two fish red fish blue fish'
-    #     print_histogram(fish_text.split())
-    #     # Test histogram on words in a long repetitive sentence
-    #     woodchuck_text = ('how much wood would a wood chuck chuck'
-    #                       ' if a wood chuck could chuck wood')
-    #     print_histogram(woodchuck_text.split())
+    import sys
+    arguments = sys.argv[1:]  # Exclude script name in first argument
+    if len(arguments) >= 1:
+        # Test histogram on given arguments
+        print_histogram(arguments)
+    else:
+        # Test histogram on letters in a word
+        word = 'abracadabra'
+        print_histogram(list(word))
+        # Test histogram on words in a classic book title
+        fish_text = 'one fish two fish red fish blue fish'
+        print_histogram(fish_text.split())
+        # Test histogram on words in a long repetitive sentence
+        woodchuck_text = ('how much wood would a wood chuck chuck'
+                          ' if a wood chuck could chuck wood')
+        print_histogram(woodchuck_text.split())
 
 
 if __name__ == '__main__':
