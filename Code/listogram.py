@@ -39,7 +39,6 @@ class Listogram(list):
         # self = [['one', 1], ['fish', 4], ['two', 1], ['red', 1], ['blue', 1]]
         for inner_list in self:
             if inner_list[0] == word:
-                print(f"Found '{word}' with frequency {inner_list[1]}")
                 # Return the frequency (second element)
                 return inner_list[1]
         return 0
@@ -47,6 +46,10 @@ class Listogram(list):
     def __contains__(self, word):
         """Return boolean indicating if given word is in this histogram."""
         # TODO: Check if word is in this histogram
+        for inner_list in self:
+            if inner_list[0] == word:
+                return True
+        return False
 
     def index_of(self, target):
         """Return the index of entry containing given target word if found in
@@ -123,12 +126,20 @@ def main():
     # Test the frequency method
     test_word = 'fish'
     result = histogram.frequency(test_word)
-    print(f"Frequency of '{test_word}': {result}")
+    print(f"Frequency of '{test_word}': {result}, correct: 4")
 
     # Test a word that does not exist
     test_word = 'shark'
     result = histogram.frequency(test_word)
-    print(f"Frequency of '{test_word}': {result}")
+    print(f"Frequency of '{test_word}': {result}, correct: 0")
+
+    test_word = 'fish'
+    contains_word = histogram.__contains__(test_word)
+    print(f"Contains '{test_word}': {contains_word}, correct: True")
+
+    test_word = 'dino'
+    contains_word = histogram.__contains__(test_word)
+    print(f"Contains '{test_word}': {contains_word}, correct: False")
     print("#####################################################")
 
     # import sys
