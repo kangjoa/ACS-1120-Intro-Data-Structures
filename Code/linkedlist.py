@@ -112,7 +112,7 @@ class LinkedList:
         """
         Return an item from this linked list if it is present.
         TODO: Best case running time: O(1) Why and under what conditions?
-        The best case running time is if we find the matcher in the first node (the head).
+        The best case running time is if we find the matcher in the first node (the head). Then we get to exit early and do not have to visit each node in the linked list.
         TODO: Worst case running time: O(n) Why and under what conditions?
         The worst case running time is if the matcher is at the end of the linked list (the tail) or not found because we have to visit each node and traverse through the whole linked list.
         """
@@ -138,11 +138,42 @@ class LinkedList:
         # TODO: Otherwise raise error to tell user that delete has failed
         # Hint: raise ValueError('Item not found: {}'.format(item))
 
+        # Is the list empty?
+        if self.is_empty():
+            raise ValueError('Item not found: {}'.format(item))
+
+        # Start with first node (head) as current
+        current = self.head
+
+        # There is no previous node to the first, so it's None
+        previous = None
+
+        # Case: when the item is also the head
+
+        while current is not None:
+            if current.data == item:
+                # if current is self.head:
+                #     current = current.next
+                #     previous = current
+                #     break
+                current = current.next
+                # get previous to point to current by updating next value
+                previous.next = current
+                break
+            else:
+                previous = current
+                current = current.next
+
+        # Case: when the item is not found.
+        if current is None:
+            raise ValueError('Item not found: {}'.format(item))
+
 
 def test_linked_list():
     print("######################################################")
     # Initialize a linked list with values
-    ll = LinkedList(['D', 'E', 'F', 'G'])
+    # ll = LinkedList(['D', 'E', 'F', 'G'])
+    # ll = LinkedList(['Z', 'Y'])
 
     # print(f"print ll: {ll}")
 
@@ -155,22 +186,36 @@ def test_linked_list():
     # print('prepend C:', ll)
 
     # # find
-    matcher = 'F'
-    result = ll.find(matcher)
-    print(result)
-    print("Should be True")
+    # matcher = 'F'
+    # result = ll.find(matcher)
+    # print(result)
+    # print("Should be True")
 
-    matcher_2 = "$"
-    result = ll.find(matcher_2)
-    print(result)
-    print("Should be False")
+    # matcher_2 = "$"
+    # result = ll.find(matcher_2)
+    # print(result)
+    # print("Should be False")
 
-    # Initialize a linked list with values
-    short_ll = LinkedList(['D'])
-    matcher_3 = 'D'
-    result = short_ll.find(matcher_3)
+    # # Initialize a linked list with values
+    # short_ll = LinkedList(['D'])
+    # matcher_3 = 'D'
+    # result = short_ll.find(matcher_3)
 
-    print(result)
+    # print(result)
+
+    # # delete
+    ll = LinkedList(['D', 'E', 'F', 'G'])
+    item = 'E'
+    result = ll.delete(item)
+    print(ll)
+
+    # item = "Z"
+    # result = ll.delete(item)
+    # print(result)
+
+    # item = "D"
+    # result = ll.delete(item)
+
     print("######################################################")
 
     # ll = LinkedList()
