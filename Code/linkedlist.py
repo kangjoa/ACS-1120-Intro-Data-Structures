@@ -149,25 +149,21 @@ class LinkedList:
         previous = None
 
         # Case: when the item is also the head
+        if item == self.head.data:
+            self.head = self.head.next
+            return
 
         while current is not None:
-            if item == self.head.data:
-                previous = current.next
-                current = previous
-                self.head = current
-                break
-            elif current.data == item:
+            if current.data == item:
                 current = current.next
                 # get previous to point to current by updating next value
                 previous.next = current
-                break
-            else:
-                previous = current
-                current = current.next
+                return
+            previous = current
+            current = current.next
 
         # Case: when the item is not found.
-        if current is None:
-            raise ValueError('Item not found: {}'.format(item))
+        raise ValueError('Item not found: {}'.format(item))
 
 
 def test_linked_list():
@@ -205,47 +201,47 @@ def test_linked_list():
     # print(result)
 
     # delete
-    ll = LinkedList(['D', 'E', 'F', 'G'])
-    item = 'E'
-    result = ll.delete(item)
-    print(ll)
+    # ll = LinkedList(['D', 'E', 'F', 'G'])
+    # item = 'E'
+    # result = ll.delete(item)
+    # print(ll)
 
-    ll_2 = LinkedList(['D', 'E', 'F', 'G'])
-    item = "D"
-    result = ll_2.delete(item)
-    print(ll_2)
+    # ll_2 = LinkedList(['D', 'E', 'F', 'G'])
+    # item = "D"
+    # result = ll_2.delete(item)
+    # print(ll_2)
 
-    try:
-        ll_2.delete('Z')
-    except ValueError as e:
-        print(e)
+    # try:
+    #     ll_2.delete('Z')
+    # except ValueError as e:
+    #     print(e)
 
     # print("######################################################")
 
-    # ll = LinkedList()
-    # print('list: {}'.format(ll))
-    # print('\nTesting append:')
-    # for item in ['A', 'B', 'C']:
-    #     print('append({!r})'.format(item))
-    #     ll.append(item)
-    #     print('list: {}'.format(ll))
+    ll = LinkedList()
+    print('list: {}'.format(ll))
+    print('\nTesting append:')
+    for item in ['A', 'B', 'C']:
+        print('append({!r})'.format(item))
+        ll.append(item)
+        print('list: {}'.format(ll))
 
-    # print('head: {}'.format(ll.head))
-    # print('tail: {}'.format(ll.tail))
-    # print('length: {}'.format(ll.length()))
+    print('head: {}'.format(ll.head))
+    print('tail: {}'.format(ll.tail))
+    print('length: {}'.format(ll.length()))
 
-    # # Enable this after implementing delete method
-    # delete_implemented = False
-    # if delete_implemented:
-    #     print('\nTesting delete:')
-    #     for item in ['B', 'C', 'A']:
-    #         print('delete({!r})'.format(item))
-    #         ll.delete(item)
-    #         print('list: {}'.format(ll))
+    # Enable this after implementing delete method
+    delete_implemented = False
+    if delete_implemented:
+        print('\nTesting delete:')
+        for item in ['B', 'C', 'A']:
+            print('delete({!r})'.format(item))
+            ll.delete(item)
+            print('list: {}'.format(ll))
 
-    #     print('head: {}'.format(ll.head))
-    #     print('tail: {}'.format(ll.tail))
-    #     print('length: {}'.format(ll.length()))
+        print('head: {}'.format(ll.head))
+        print('tail: {}'.format(ll.tail))
+        print('length: {}'.format(ll.length()))
 
 
 if __name__ == '__main__':
