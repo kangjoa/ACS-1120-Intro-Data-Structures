@@ -151,11 +151,12 @@ class LinkedList:
         # Case: when the item is also the head
 
         while current is not None:
-            if current.data == item:
-                # if current is self.head:
-                #     current = current.next
-                #     previous = current
-                #     break
+            if item == self.head.data:
+                previous = current.next
+                current = previous
+                self.head = current
+                break
+            elif current.data == item:
                 current = current.next
                 # get previous to point to current by updating next value
                 previous.next = current
@@ -170,7 +171,7 @@ class LinkedList:
 
 
 def test_linked_list():
-    print("######################################################")
+    # print("######################################################")
     # Initialize a linked list with values
     # ll = LinkedList(['D', 'E', 'F', 'G'])
     # ll = LinkedList(['Z', 'Y'])
@@ -203,20 +204,23 @@ def test_linked_list():
 
     # print(result)
 
-    # # delete
+    # delete
     ll = LinkedList(['D', 'E', 'F', 'G'])
     item = 'E'
     result = ll.delete(item)
     print(ll)
 
-    # item = "Z"
-    # result = ll.delete(item)
-    # print(result)
+    ll_2 = LinkedList(['D', 'E', 'F', 'G'])
+    item = "D"
+    result = ll_2.delete(item)
+    print(ll_2)
 
-    # item = "D"
-    # result = ll.delete(item)
+    try:
+        ll_2.delete('Z')
+    except ValueError as e:
+        print(e)
 
-    print("######################################################")
+    # print("######################################################")
 
     # ll = LinkedList()
     # print('list: {}'.format(ll))
