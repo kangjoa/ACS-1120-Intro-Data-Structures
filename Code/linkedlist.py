@@ -58,13 +58,13 @@ class LinkedList:
         """
         # TODO: Loop through all nodes and count one for each
         count = 0
-        curr = self.head
+        current = self.head
 
-        while curr is not None:
+        while current is not None:
             count += 1
 
             # move pointer to next node (stay inside LL class)
-            curr = curr.next
+            current = current.next
 
         return count
 
@@ -96,23 +96,38 @@ class LinkedList:
         new_node = Node(item)
 
         # Store the current head
-        curr = self.head
+        current = self.head
 
         # TODO: Prepend node before head, if it exists
         if self.head is not None:
             # Make the new node the head of the list
             self.head = new_node
             # Link the new head's pointer to the old head so we don't lose it
-            self.head.next = curr
+            self.head.next = current
         else:
             self.head = new_node
             self.tail = new_node
 
-    def find(self, matcher):
-        """Return an item from this linked list if it is present.
-        TODO: Best case running time: O(???) Why and under what conditions?
-        TODO: Worst case running time: O(???) Why and under what conditions?"""
+    def find(self, matcher) -> bool:
+        """
+        Return an item from this linked list if it is present.
+        TODO: Best case running time: O(1) Why and under what conditions?
+        The best case running time is if we find the matcher in the first node (the head).
+        TODO: Worst case running time: O(n) Why and under what conditions?
+        The worst case running time is if the matcher is at the end of the linked list (the tail) or not found because we have to visit each node and traverse through the whole linked list.
+        """
         # TODO: Loop through all nodes to find item, if present return True otherwise False
+
+        current = self.head
+
+        while current is not None:
+            if current.data == matcher:
+                return True
+
+            # move pointer to next node (stay inside LL class)
+            current = current.next
+
+        return False
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
@@ -136,34 +151,52 @@ def test_linked_list():
     # print('should be 4')
 
     # prepend a value
-    ll.prepend('C')
-    print('prepend C:', ll)
+    # ll.prepend('C')
+    # print('prepend C:', ll)
+
+    # # find
+    matcher = 'F'
+    result = ll.find(matcher)
+    print(result)
+    print("Should be True")
+
+    matcher_2 = "$"
+    result = ll.find(matcher_2)
+    print(result)
+    print("Should be False")
+
+    # Initialize a linked list with values
+    short_ll = LinkedList(['D'])
+    matcher_3 = 'D'
+    result = short_ll.find(matcher_3)
+
+    print(result)
     print("######################################################")
 
-    ll = LinkedList()
-    print('list: {}'.format(ll))
-    print('\nTesting append:')
-    for item in ['A', 'B', 'C']:
-        print('append({!r})'.format(item))
-        ll.append(item)
-        print('list: {}'.format(ll))
+    # ll = LinkedList()
+    # print('list: {}'.format(ll))
+    # print('\nTesting append:')
+    # for item in ['A', 'B', 'C']:
+    #     print('append({!r})'.format(item))
+    #     ll.append(item)
+    #     print('list: {}'.format(ll))
 
-    print('head: {}'.format(ll.head))
-    print('tail: {}'.format(ll.tail))
-    print('length: {}'.format(ll.length()))
+    # print('head: {}'.format(ll.head))
+    # print('tail: {}'.format(ll.tail))
+    # print('length: {}'.format(ll.length()))
 
-    # Enable this after implementing delete method
-    delete_implemented = False
-    if delete_implemented:
-        print('\nTesting delete:')
-        for item in ['B', 'C', 'A']:
-            print('delete({!r})'.format(item))
-            ll.delete(item)
-            print('list: {}'.format(ll))
+    # # Enable this after implementing delete method
+    # delete_implemented = False
+    # if delete_implemented:
+    #     print('\nTesting delete:')
+    #     for item in ['B', 'C', 'A']:
+    #         print('delete({!r})'.format(item))
+    #         ll.delete(item)
+    #         print('list: {}'.format(ll))
 
-        print('head: {}'.format(ll.head))
-        print('tail: {}'.format(ll.tail))
-        print('length: {}'.format(ll.length()))
+    #     print('head: {}'.format(ll.head))
+    #     print('tail: {}'.format(ll.tail))
+    #     print('length: {}'.format(ll.length()))
 
 
 if __name__ == '__main__':
