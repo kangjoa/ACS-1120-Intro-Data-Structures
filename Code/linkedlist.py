@@ -108,31 +108,49 @@ class LinkedList:
             self.head = new_node
             self.tail = new_node
 
-    def find(self, matcher) -> bool:
+    def find(self, matcher):
         """
         Return an item from this linked list if it is present.
         TODO: Best case running time: O(1) Why and under what conditions?
         The best case running time is if we find the matcher in the first node (the head). Then we get to exit early and do not have to visit each node in the linked list.
         TODO: Worst case running time: O(n) Why and under what conditions?
         The worst case running time is if the matcher is at the end of the linked list (the tail) or not found because we have to visit each node and traverse through the whole linked list.
+
+        Args:
+            matcher (function): A function that takes an item as input and returns True if the item matches, False if there is no match.
         """
         # TODO: Loop through all nodes to find item, if present return True otherwise False
 
         current = self.head
 
         while current is not None:
-            if current.data == matcher:
-                return True
+            if matcher(current.data):
+                return current.data
 
             # move pointer to next node (stay inside LL class)
             current = current.next
 
-        return False
+        return None
+
+        # Below works but doesn't treat matcher as a function
+        # current = self.head
+
+        # while current is not None:
+        #     if current.data == matcher:
+        #         return True
+
+        #     # move pointer to next node (stay inside LL class)
+        #     current = current.next
+
+        # return False
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
-        TODO: Best case running time: O(???) Why and under what conditions?
-        TODO: Worst case running time: O(???) Why and under what conditions?"""
+        TODO: Best case running time: O(1) Why and under what conditions?
+        The best case is if the item to delete is the first node in the linked list. Then we only have to update the head.
+        TODO: Worst case running time: O(n) Why and under what conditions?
+        The worst case is if the item to delete is at the end of the list or not in the list. Then we have to visit each node in the list.
+        """
         # TODO: Loop through all nodes to find one whose data matches given item
         # TODO: Update previous node to skip around node with matching data
         # TODO: Otherwise raise error to tell user that delete has failed
@@ -216,32 +234,36 @@ def test_linked_list():
     # except ValueError as e:
     #     print(e)
 
+    ll = LinkedList(['A', 'B', 'C'])
+    ll.delete('C')
+    print(ll)
+
     # print("######################################################")
 
-    ll = LinkedList()
-    print('list: {}'.format(ll))
-    print('\nTesting append:')
-    for item in ['A', 'B', 'C']:
-        print('append({!r})'.format(item))
-        ll.append(item)
-        print('list: {}'.format(ll))
+    # ll = LinkedList()
+    # print('list: {}'.format(ll))
+    # print('\nTesting append:')
+    # for item in ['A', 'B', 'C']:
+    #     print('append({!r})'.format(item))
+    #     ll.append(item)
+    #     print('list: {}'.format(ll))
 
-    print('head: {}'.format(ll.head))
-    print('tail: {}'.format(ll.tail))
-    print('length: {}'.format(ll.length()))
+    # print('head: {}'.format(ll.head))
+    # print('tail: {}'.format(ll.tail))
+    # print('length: {}'.format(ll.length()))
 
-    # Enable this after implementing delete method
-    delete_implemented = False
-    if delete_implemented:
-        print('\nTesting delete:')
-        for item in ['B', 'C', 'A']:
-            print('delete({!r})'.format(item))
-            ll.delete(item)
-            print('list: {}'.format(ll))
+    # # Enable this after implementing delete method
+    # delete_implemented = False
+    # if delete_implemented:
+    #     print('\nTesting delete:')
+    #     for item in ['B', 'C', 'A']:
+    #         print('delete({!r})'.format(item))
+    #         ll.delete(item)
+    #         print('list: {}'.format(ll))
 
-        print('head: {}'.format(ll.head))
-        print('tail: {}'.format(ll.tail))
-        print('length: {}'.format(ll.length()))
+    #     print('head: {}'.format(ll.head))
+    #     print('tail: {}'.format(ll.tail))
+    #     print('length: {}'.format(ll.length()))
 
 
 if __name__ == '__main__':
