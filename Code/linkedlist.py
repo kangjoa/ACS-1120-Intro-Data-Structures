@@ -169,6 +169,9 @@ class LinkedList:
         # Case: when the item is also the head
         if item == self.head.data:
             self.head = self.head.next
+            # If the list becomes empty after deleting the head, update the tail
+            if self.head is None:
+                self.tail = None
             return
 
         while current is not None:
@@ -176,6 +179,8 @@ class LinkedList:
                 current = current.next
                 # get previous to point to current by updating next value
                 previous.next = current
+                if current == self.tail:
+                    self.tail = previous
                 return
             previous = current
             current = current.next
@@ -219,10 +224,10 @@ def test_linked_list():
     # print(result)
 
     # delete
-    # ll = LinkedList(['D', 'E', 'F', 'G'])
-    # item = 'E'
-    # result = ll.delete(item)
-    # print(ll)
+    ll = LinkedList(['D', 'E', 'F', 'G'])
+    item = 'E'
+    result = ll.delete(item)
+    print(ll)
 
     # ll_2 = LinkedList(['D', 'E', 'F', 'G'])
     # item = "D"
@@ -234,8 +239,12 @@ def test_linked_list():
     # except ValueError as e:
     #     print(e)
 
-    ll = LinkedList(['A', 'B', 'C'])
-    ll.delete('C')
+    # ll = LinkedList(['B', 'C'])
+    # ll.delete('C')
+    # print(ll)
+
+    ll = LinkedList(['A'])
+    ll.delete('A')
     print(ll)
 
     # print("######################################################")
