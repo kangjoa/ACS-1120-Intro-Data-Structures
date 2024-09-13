@@ -121,28 +121,28 @@ class LinkedList:
         """
         # TODO: Loop through all nodes to find item, if present return True otherwise False
 
-        current = self.head
-
-        while current is not None:
-            if matcher(current.data):
-                return current.data
-
-            # move pointer to next node (stay inside LL class)
-            current = current.next
-
-        return None
-
-        # Below works but doesn't treat matcher as a function
         # current = self.head
 
         # while current is not None:
-        #     if current.data == matcher:
-        #         return True
+        #     if matcher(current.data):
+        #         return current.data
 
         #     # move pointer to next node (stay inside LL class)
         #     current = current.next
 
-        # return False
+        # return None
+
+        # Below works but doesn't treat matcher as a function
+        current = self.head
+
+        while current is not None:
+            if current.data == matcher:
+                return True
+
+            # move pointer to next node (stay inside LL class)
+            current = current.next
+
+        return False
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
