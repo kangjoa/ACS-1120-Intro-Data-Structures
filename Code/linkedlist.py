@@ -176,9 +176,9 @@ class LinkedList:
 
         while current is not None:
             if current.data == item:
-                current = current.next
-                # get previous to point to current by updating next value
-                previous.next = current
+                # Delete the node by updating the previous node's next pointer to skip over the current node
+                previous.next = current.next
+                # If the current node is the tail, update the tail to the previous node
                 if current == self.tail:
                     self.tail = previous
                 return
@@ -224,10 +224,15 @@ def test_linked_list():
     # print(result)
 
     # delete
-    ll = LinkedList(['D', 'E', 'F', 'G'])
-    item = 'E'
-    result = ll.delete(item)
+    ll = LinkedList(['D', 'E', 'F'])
+    ll.delete('F')
     print(ll)
+
+    # delete
+    # ll = LinkedList(['D', 'E', 'F', 'G'])
+    # item = 'E'
+    # result = ll.delete(item)
+    # print(ll)
 
     # ll_2 = LinkedList(['D', 'E', 'F', 'G'])
     # item = "D"
@@ -243,36 +248,36 @@ def test_linked_list():
     # ll.delete('C')
     # print(ll)
 
-    ll = LinkedList(['A'])
-    ll.delete('A')
-    print(ll)
+    # ll = LinkedList(['A'])
+    # ll.delete('A')
+    # print(ll)
 
     # print("######################################################")
 
-    ll = LinkedList()
-    print('list: {}'.format(ll))
-    print('\nTesting append:')
-    for item in ['A', 'B', 'C']:
-        print('append({!r})'.format(item))
-        ll.append(item)
-        print('list: {}'.format(ll))
+    # ll = LinkedList()
+    # print('list: {}'.format(ll))
+    # print('\nTesting append:')
+    # for item in ['A', 'B', 'C']:
+    #     print('append({!r})'.format(item))
+    #     ll.append(item)
+    #     print('list: {}'.format(ll))
 
-    print('head: {}'.format(ll.head))
-    print('tail: {}'.format(ll.tail))
-    print('length: {}'.format(ll.length()))
+    # print('head: {}'.format(ll.head))
+    # print('tail: {}'.format(ll.tail))
+    # print('length: {}'.format(ll.length()))
 
-    # Enable this after implementing delete method
-    delete_implemented = False
-    if delete_implemented:
-        print('\nTesting delete:')
-        for item in ['B', 'C', 'A']:
-            print('delete({!r})'.format(item))
-            ll.delete(item)
-            print('list: {}'.format(ll))
+    # # Enable this after implementing delete method
+    # delete_implemented = True
+    # if delete_implemented:
+    #     print('\nTesting delete:')
+    #     for item in ['B', 'C', 'A']:
+    #         print('delete({!r})'.format(item))
+    #         ll.delete(item)
+    #         print('list: {}'.format(ll))
 
-        print('head: {}'.format(ll.head))
-        print('tail: {}'.format(ll.tail))
-        print('length: {}'.format(ll.length()))
+    #     print('head: {}'.format(ll.head))
+    #     print('tail: {}'.format(ll.tail))
+    #     print('length: {}'.format(ll.length()))
 
 
 if __name__ == '__main__':
