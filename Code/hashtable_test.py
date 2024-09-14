@@ -85,8 +85,8 @@ class HashTableTest(unittest.TestCase):
         ht.set('V', 5)  # Update value
         ht.set('X', 10)  # Update value
         assert ht.get('I') == 1
-        assert ht.get('V') == 5
-        assert ht.get('X') == 10
+        assert ht.get('V') == 5, f"Expected 5, but got {ht.get('V')}"
+        assert ht.get('X') == 10, f"Expected 10, but got {ht.get('V')}"
         assert ht.length() == 3  # Check length is not overcounting
 
     def test_delete(self):
