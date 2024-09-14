@@ -73,10 +73,10 @@ class HashTable(object):
 
     def length(self):
         """Return the number of key-value entries by traversing its buckets.
-        TODO: Running time: O(n) Why and under what conditions?
-        The running time is O(n) where n is the total number of key-value pairs in the hash table.
-        - Why: Each key-value pair in each bucket is visited once and only once.
-        - Conditions: The run time will be O(n) if the hash collisions are well-handled and if there aren't too many key-value pairs in any one bucket.
+        TODO: Running time: O(1) Why and under what conditions?
+        The running time is O(1) because the size of the hash table is stored in a variable and updated in constant time.
+        - Why: The size of the hash table is updated in constant time when we use the set() and delete() methods.
+        - Conditions: The run time will be O(1) if the hash collisions are well-handled and if there aren't too many key-value pairs in any one bucket.
         """
         # TODO: Loop through all buckets
         # TODO: Count number of key-value entries in each bucket
@@ -88,8 +88,12 @@ class HashTable(object):
         return self.size
 
     def contains(self, key):
-        """Return True if this hash table contains the given key, or False.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        """
+        Return True if this hash table contains the given key, or False.
+        TODO: Running time: O(n) Why and under what conditions?
+        - Why: In the worst case, we might have to traverse the entire linked list to find the key. 
+        - Conditions: If the buckets are small and the keys are well-distributed, the run time will be O(1).
+        """
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
 
@@ -109,8 +113,12 @@ class HashTable(object):
         return False
 
     def get(self, key):
-        """Return the value associated with the given key, or raise KeyError.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        """
+        Return the value associated with the given key, or raise KeyError.
+        TODO: Running time: O(n) Why and under what conditions?
+        - Why: In the worst case, we might have to traverse the entire linked list to find the key. 
+        - Conditions: If the buckets are small and the keys are well-distributed, the run time will be O(1).
+        """
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
         # TODO: If found, return value associated with given key
@@ -148,7 +156,10 @@ class HashTable(object):
 
     def set(self, key, value):
         """Insert or update the given key with its associated value.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        TODO: Running time: O(n) Why and under what conditions?
+        - Why: In the worst case, we might have to traverse the entire linked list to find the key. 
+        - Conditions: If the buckets are small and the keys are well-distributed, the run time will be O(1).
+        """
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
         # TODO: If found, update value associated with given key
@@ -173,7 +184,10 @@ class HashTable(object):
 
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        TODO: Running time: O(n) Why and under what conditions?
+        - Why: In the worst case, we might have to traverse the entire linked list to find the key. 
+        - Conditions: If the buckets are small and the keys are well-distributed, the run time will be O(1).
+        """
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
         # TODO: If found, delete entry associated with given key
