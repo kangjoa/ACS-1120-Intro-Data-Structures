@@ -1,6 +1,7 @@
 #!python
 
 from hashtable import HashTable
+from linkedlist import LinkedList
 import unittest
 # Python 2 and 3 compatibility: unittest module renamed this assertion method
 if not hasattr(unittest.TestCase, 'assertCountEqual'):
@@ -72,7 +73,7 @@ class HashTableTest(unittest.TestCase):
         assert ht.get('I') == 1
         assert ht.get('V') == 5
         assert ht.get('X') == 10
-        assert ht.length() == 3
+        assert ht.length() == 3, f"Expected 3, but got {ht.length()}"
         with self.assertRaises(KeyError):
             ht.get('A')  # Key does not exist
 
@@ -87,7 +88,8 @@ class HashTableTest(unittest.TestCase):
         assert ht.get('I') == 1
         assert ht.get('V') == 5, f"Expected 5, but got {ht.get('V')}"
         assert ht.get('X') == 10, f"Expected 10, but got {ht.get('V')}"
-        assert ht.length() == 3  # Check length is not overcounting
+        # Check length is not overcounting
+        assert ht.length() == 3, f"Expected 3, but got {ht.length()}"
 
     def test_delete(self):
         ht = HashTable()

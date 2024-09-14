@@ -9,6 +9,8 @@ class HashTable(object):
         """Initialize this hash table with the given initial size."""
         # Create a new list (used as fixed-size array) of empty linked lists
         self.buckets = []
+        # Track the number of key-value pairs in the hash table
+        self.size = 0
         for i in range(init_size):
             self.buckets.append(LinkedList())
 
@@ -78,11 +80,12 @@ class HashTable(object):
         """
         # TODO: Loop through all buckets
         # TODO: Count number of key-value entries in each bucket
-        total_length = 0
-        for bucket in self.buckets:
-            # bucket is an instance of a Linked List
-            total_length += bucket.length()
-        return total_length
+        # total_length = 0
+        # for bucket in self.buckets:
+        #     # bucket is an instance of a Linked List
+        #     total_length += bucket.length()
+        # return total_length
+        return self.size
 
     def contains(self, key):
         """Return True if this hash table contains the given key, or False.
@@ -160,11 +163,13 @@ class HashTable(object):
             if item_key == key:
                 # Key found, update its value
                 current.data = (key, value)
-                # Exit early after updating
                 return
+
             current = current.next
 
+        # If key was not found, append the new key-value pair
         bucket.append((key, value))
+        self.size += 1
 
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
@@ -196,7 +201,9 @@ class HashTable(object):
                 if current == bucket.tail:
                     bucket.tail = previous
 
-                    return  # Key found and deleted, exit the method
+                self.size -= 1
+
+                return  # Key found and deleted, exit the method
 
             # Move to the next node
             previous = current
