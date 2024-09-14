@@ -152,6 +152,18 @@ class HashTable(object):
         # TODO: Otherwise, insert given key-value entry into bucket
         bucket_index = self._bucket_index(key)
         bucket = self.buckets[bucket_index]
+
+        # Traverse the bucket to see if the key already exists
+        current = bucket.head
+        while current is not None:
+            item_key, item_value = current.data
+            if item_key == key:
+                # Key found, update its value
+                current.data = (key, value)
+                # Exit early after updating
+                return
+            current = current.next
+
         bucket.append((key, value))
 
     def delete(self, key):
@@ -170,7 +182,7 @@ class HashTable(object):
 
         while current is not None:
             # Unpack the key-value pair
-            item_key, _ = current.data
+            item_key, item_value = current.data
             if item_key == key:
                 # If we found the node, remove it
                 if previous is None:
