@@ -2,24 +2,62 @@
 from flask import Flask
 from histogram import histogram
 from sample import sample
+import markov_chain_second as markov
+import random
+from tokens import tokenize, remove_punctuation
 
 app = Flask(__name__)
 
-# TODO: Initialize your histogram, hash table, or markov chain here.
-# Any code placed here will run only once, when the server starts.
-# app.py
+# Initialize histogram and build Markov chain
+with open('source_text.txt', 'r') as file:
+    text = file.read()
 
-# Initialize histogram by using the imported histogram function
-histogram_data = histogram('source_text.txt')
+text = remove_punctuation(text)
+tokens = text.split()
+
+markov_chain = markov.build_second_order_markov_chain(tokens)
+
+with open('second_source.txt', 'r') as file:
+    text = file.read()
+
+text = remove_punctuation(text)
+tokens = text.split()
+
+markov_chain_2 = markov.build_second_order_markov_chain(tokens)
 
 
 @app.route("/")
 def home():
     """Route that returns a web page containing the generated text."""
-    # Sample a random word from the histogram
-    random_word_weighted = sample(histogram_data)
+    sentences = []
 
-    return f"<p>{random_word_weighted}</p>"
+    # Generate 5 sentences
+    for _ in range(5):
+        # Choose a random starting pair
+        start_pair = tuple(random.choice(list(markov_chain.keys())))
+        sentence = markov.random_walk(markov_chain, start_pair, 30)
+        sentences.append(sentence)
+
+    for _ in range(5):
+        # Choose a random starting pair
+        start_pair = tuple(random.choice(list(markov_chain_2.keys())))
+        sentence = markov.random_walk(markov_chain_2, start_pair, 30)
+        sentences.append(sentence)
+
+    # Join sentences into HTML
+    html_content = "<h1>Second OrderMarkov Chain Generated Sentences</h1>"
+
+    html_content += "<h2>Sentences from a 25, 058 token corpus:</h2>"
+    for i, sentence in enumerate(sentences[:5], 1):
+        html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
+
+    # Add a sub-header before the sixth sentence
+    html_content += "<h2>Sentences from a 10, 5563 token corpus:</h2>"
+
+    # Add sentences from the second source
+    for i, sentence in enumerate(sentences[5:], 6):
+        html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
+    return html_content
 
 
 if __name__ == "__main__":

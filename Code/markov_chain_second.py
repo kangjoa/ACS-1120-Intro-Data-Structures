@@ -1,6 +1,7 @@
 # Import Dictogram from the dictogram module.
 from dictogram import Dictogram
 import random
+import timeit
 
 
 def build_second_order_markov_chain(word_list: list) -> dict:
@@ -142,6 +143,44 @@ length = {length}
     return result
 
 
+def build_second_order_chain(word_list: list):
+    """
+    Builds a second-order Markov chain.
+    """
+    build_second_order_markov_chain(word_list)
+
+
+def build_fourth_order_chain(word_list: list):
+    """
+    Builds a fourth-order Markov chain.
+    """
+    build_fourth_order_markov_chain(word_list)
+
+
+def benchmark_markov_chains(file_path: str):
+    """
+    Benchmarks the build time of second-order and fourth-order Markov chains.
+
+    Args:
+        file_path (str): Path to the text file for the Markov chain.
+    """
+    # Read the file and split it into words
+    with open(file_path, 'r') as file:
+        word_list = file.read().split()
+
+    # Benchmark second-order Markov chain build time
+    timer_2nd_order = timeit.Timer(
+        'build_second_order_chain(word_list)', globals=globals())
+    second_order_time = timer_2nd_order.timeit(number=100) / 100
+    print(f'Second-order Markov chain build time: {second_order_time}')
+
+    # Benchmark fourth-order Markov chain build time
+    timer_4th_order = timeit.Timer(
+        'build_fourth_order_chain(word_list)', globals=globals())
+    fourth_order_time = timer_4th_order.timeit(number=100) / 100
+    print(f'Fourth-order Markov chain build time: {fourth_order_time}')
+
+
 if __name__ == '__main__':
     corpus = "So they couldn’t understand his words any more, although they seemed clear enough to him, clearer than before—perhaps his ears had become used to the sound."
 
@@ -198,3 +237,8 @@ if __name__ == '__main__':
     sentence_word_not_found = random_walk_fourth(
         markov_chain_fourth, ("croissant", "not", "in", "book"), 10)
     print(f"sentence 3: {sentence_word_not_found}")
+
+    print("\n")
+    print("################### Benchmark #########################")
+    # Run the benchmark
+    benchmark_markov_chains(file_path)
