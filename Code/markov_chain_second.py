@@ -57,6 +57,91 @@ def random_walk(markov_chain: dict, start_words: tuple, length=10) -> str:
     return ' '.join(sentence)
 
 
+def build_fourth_order_markov_chain(word_list: list) -> dict:
+    """
+    Takes a list of strings to build a Markov chain where each word quadruple points to a Dictogram of the words that follow it.
+
+    Args:
+        word_list (list): List of words (strings) representing the corpus.
+
+    Returns:
+        dict: A dictionary where each key is a word quadruple (tuple) and each value is a Dictogram of the words that follow it and their frequency.
+    """
+    # Initialize dictionary
+    markov_chain = {}
+
+    # Iterate over word_list to build the chain
+    for i in range(len(word_list) - 4):
+        word_quadruple = (word_list[i], word_list[i + 1],
+                          word_list[i + 2], word_list[i + 3])
+        next_word = word_list[i + 4]
+
+        # If the word quadruple is not in the chain, add it with an empty Dictogram
+        if word_quadruple not in markov_chain:
+            markov_chain[word_quadruple] = Dictogram()
+
+        # Add the next word to the Dictogram for this word quadruple
+        markov_chain[word_quadruple].add_count(next_word)
+
+    return markov_chain
+
+
+def random_walk_fourth(markov_chain: dict, start_words: tuple, length=10) -> str:
+    """
+    Generate a random sentence using the Markov chain.
+
+    Args:
+        markov_chain (dict): A dictionary where each key is a word quadruple (tuple) and each value is a Dictogram of the words that follow it and their frequency.
+        start_words (tuple): The word quadruple to start the sentence, from the corpus. 
+        length (int, optional): The number of words in the generated sentence. Defaults to 10.
+
+    Returns:
+        str: The randomly generated sentence.
+    """
+    current_quadruple = start_words
+    sentence = list(start_words)
+
+    for _ in range(length - 4):
+        if current_quadruple in markov_chain:
+            next_word = markov_chain[current_quadruple].sample()
+            sentence.append(next_word)
+            current_quadruple = (
+                current_quadruple[1], current_quadruple[2], current_quadruple[3], next_word)
+        else:
+            break
+
+    return ' '.join(sentence)
+
+
+def benchmark_markov_chain(chain_function, markov_chain, start_words, length):
+    """
+    Benchmarks the time taken by the markov_chain random walk function to generate a sentence.
+
+    Args:
+        chain_function (func): The random walk function to benchmark.
+        markov_chain (dict): The Markov chain dictionary.
+        start_words (tuple): The starting word pair.
+        length (int): The length of the generated sentence.
+
+    Returns:
+        float: The time taken in seconds.
+    """
+    setup_code = f"""
+from __main__ import {chain_function.__name__}
+markov_chain = {repr(markov_chain)}
+start_words = {repr(start_words)}
+length = {length}
+"""
+
+    stmt = f"{chain_function.__name__}(markov_chain, start_words, length)"
+
+    # Using timeit to run 1000 iterations and return the average time
+    timer = timeit.Timer(stmt, setup=setup_code)
+    result = timer.timeit(number=1000) / 1000  # Average over 1000 runs
+
+    return result
+
+
 if __name__ == '__main__':
     corpus = "So they couldn’t understand his words any more, although they seemed clear enough to him, clearer than before—perhaps his ears had become used to the sound."
 
@@ -92,3 +177,24 @@ if __name__ == '__main__':
     sentence_word_not_found = random_walk(
         markov_chain, ("croissant", "nope"), 10)
     print(f"sentence 4: {sentence_word_not_found}")
+
+    print("\n")
+    print("################### Fourth-Order Markov Chain #########################")
+    print("Too deterministic and just gets sentences out of the source text")
+
+    # Build the fourth-order Markov chain
+    markov_chain_fourth = build_fourth_order_markov_chain(word_list)
+
+    # Generate sentences using the fourth-order Markov chain
+    sentence_1 = random_walk_fourth(
+        markov_chain_fourth, ("was", "a", "sort", "of"), 50)
+    print(f"sentence 1: {sentence_1}")
+
+    sentence_2 = random_walk_fourth(
+        markov_chain_fourth, ("to", "look", "out", "the"), 30)
+    print(f"sentence 2: {sentence_2}")
+
+    print("Word not found: croissant")
+    sentence_word_not_found = random_walk_fourth(
+        markov_chain_fourth, ("croissant", "not", "in", "book"), 10)
+    print(f"sentence 3: {sentence_word_not_found}")
