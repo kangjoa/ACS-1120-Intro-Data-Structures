@@ -16,7 +16,7 @@ session = OAuth1Session(consumer_key,
                         resource_owner_secret=access_token_secret)
 
 # The URL endpoint to update a status (i.e. tweet)
-url = 'https://api.twitter.com/2/tweets'
+url = 'https://api.x.com/2/tweets'
 
 # The contents of status (i.e. tweet text)
 status = 'If you are reading this on Twitter, the API request worked!'
@@ -31,10 +31,3 @@ print(resp.text)
 def tweet(status):
     resp = session.post(url, json={'text': status})
     return resp.text
-
-
-@app.route('/tweet', methods=['POST'])
-def tweet():
-    status = request.form['sentence']
-    twitter.tweet(status)
-    return redirect('/')

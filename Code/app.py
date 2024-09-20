@@ -47,17 +47,24 @@ def home():
     # Join sentences into HTML
     html_content = "<h1>Second OrderMarkov Chain Generated Sentences</h1>"
 
-    html_content += "<h2>Sentences from a 25,058 token corpus:</h2>"
+    html_content += "<h2>Sentences from a 25, 058 token corpus:</h2>"
     for i, sentence in enumerate(sentences[:5], 1):
         html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
 
     # Add a sub-header before the sixth sentence
-    html_content += "<h2>Sentences from a 105,563 token corpus:</h2>"
+    html_content += "<h2>Sentences from a 105, 563 token corpus:</h2>"
 
     # Add sentences from the second source
     for i, sentence in enumerate(sentences[5:], 6):
         html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
     return html_content
+
+
+@app.route('/tweet', methods=['POST'])
+def tweet():
+    status = request.form['sentence']
+    twitter.tweet(status)
+    return redirect('/')
 
 
 if __name__ == "__main__":
