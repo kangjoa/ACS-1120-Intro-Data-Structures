@@ -1,5 +1,5 @@
 """Main script, uses other modules to generate sentences."""
-from flask import Flask
+from flask import Flask, render_template, request
 from histogram import histogram
 from sample import sample
 import markov_chain_second as markov
