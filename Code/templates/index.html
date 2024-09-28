@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tweet Generator</title>
 </head>
+
 <body>
-    <blockquote>TODO: Replace this text with the sentence you generated!</blockquote>
+  <blockquote>{{ sentence }}</blockquote>
+  <form action="/tweet" method="post">
+    <input type="hidden" name="sentence" value="{{ sentence }}">
+    <button type="submit">Tweet this</button>
+  </form>
 </body>
+
 </html>
