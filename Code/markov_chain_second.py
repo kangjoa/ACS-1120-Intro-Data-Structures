@@ -47,13 +47,22 @@ def random_walk(markov_chain: dict, start_words: tuple, length=10) -> str:
     current_pair = start_words
     sentence = list(start_words)
 
-    for _ in range(length - 2):
+    while len(sentence) < length:
         if current_pair in markov_chain:
             next_word = markov_chain[current_pair].sample()
             sentence.append(next_word)
             current_pair = (current_pair[1], next_word)
+
+            # End the sentence if we encounter a period, exclamation mark, or question mark
+            if next_word.endswith(('.', '!', '?')):
+                break
         else:
             break
+
+    # Capitalize the first word of the sentence
+    sentence[0] = sentence[0].capitalize()
+    if not sentence[-1].endswith(('.', '!', '?')):
+        sentence[-1] += '.'
 
     return ' '.join(sentence)
 

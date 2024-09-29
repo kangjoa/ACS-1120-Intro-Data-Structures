@@ -4,6 +4,7 @@ import twitter
 from histogram import histogram
 from sample import sample
 import markov_chain_second as markov
+from markov_chain_second import build_second_order_markov_chain, random_walk
 import random
 from tokens import tokenize, remove_punctuation
 from cleanup import clean_text
@@ -11,54 +12,40 @@ from proper_nouns import extract_proper_nouns, remove_unwanted_proper_nouns
 
 app = Flask(__name__)
 
-# Initialize histogram and build Markov chain
-with open('source_text.txt', 'r') as file:
-    text = file.read()
 
-# Clean the text and join the list into a string
-cleaned_text = ' '.join(clean_text(text))
+def load_and_clean_text(file_path):
+    with open(file_path, 'r') as file:
+        text = file.read()
 
-# Process the cleaned text
-cleaned_text = remove_punctuation(cleaned_text)
-tokens = cleaned_text.split()
+    # Clean the text
+    cleaned_tokens = clean_text(text)
 
-markov_chain = markov.build_second_order_markov_chain(tokens)
+    return cleaned_tokens
 
 
-with open('second_source.txt', 'r') as file:
-    text_2 = file.read()
+tokens = load_and_clean_text('source_text.txt')
+markov_chain = build_second_order_markov_chain(tokens)
 
-# Clean the text and join the list into a string
-cleaned_text_2 = ' '.join(clean_text(text_2))
-
-# Process the cleaned second text
-cleaned_text_2 = remove_punctuation(cleaned_text_2)
-tokens = cleaned_text_2.split()
-
-markov_chain_2 = markov.build_second_order_markov_chain(tokens)
+tokens_2 = load_and_clean_text('second_source.txt')
+markov_chain_2 = build_second_order_markov_chain(tokens_2)
 
 
 @app.route("/")
 def home():
-    """Route that returns a web page containing the generated text."""
     sentences = []
 
-    # Generate 5 sentences
-    for _ in range(5):
-        # Choose a random starting pair
-        start_pair = tuple(random.choice(list(markov_chain.keys())))
-        sentence = markov.random_walk(markov_chain, start_pair, 30)
-        sentences.append(sentence)
-
-    for _ in range(5):
-        # Choose a random starting pair
-        start_pair = tuple(random.choice(list(markov_chain_2.keys())))
-        sentence = markov.random_walk(markov_chain_2, start_pair, 30)
-        sentences.append(sentence)
+    for chain in [markov_chain, markov_chain_2]:
+        for _ in range(5):
+            # Choose a random starting pair from all available pairs
+            if chain:
+                start_pair = random.choice(list(chain.keys()))
+                sentence = markov.random_walk(
+                    chain, start_pair, 50)  # Increased length to 50
+                sentences.append(sentence)
 
     random_sentence = random.choice(
         sentences) if sentences else "No sentences generated."
-
+    print(f"Generated sentence: {random_sentence}")
     return render_template('index.html', sentence=random_sentence)
 
     # # Join sentences into HTML
@@ -88,4 +75,8 @@ if __name__ == "__main__":
     """To run the Flask server, execute `python app.py` in your terminal.
        To learn more about Flask's DEBUG mode, visit
        https://flask.palletsprojects.com/en/2.0.x/server/#in-code"""
+    text = 'Gutenberg GUTENBERG gutenberg I The five-thirty train has been in and gone half an hour ago...”'
+    cleaned_text = clean_text(text)
+    # print(f"Final cleaned text: {cleaned_text}")
+
     app.run(debug=True)
