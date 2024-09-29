@@ -65,7 +65,7 @@ def random_walk(markov_chain: dict, start_word: str, length=10) -> str:
 
 
 if __name__ == '__main__':
-    corpus = "So they couldn’t understand his words any more, although they seemed clear enough to him, clearer than before—perhaps his ears had become used to the sound."
+    corpus = "GUTENBERG gutenberg Gutenberg So they couldn’t understand his words any more, although they seemed clear enough to him, clearer than before—perhaps his ears had become used to the sound."
 
     word_list = corpus.split()
     markov_chain = build_markov_chain(word_list)

@@ -6,6 +6,8 @@ from sample import sample
 import markov_chain_second as markov
 import random
 from tokens import tokenize, remove_punctuation
+from cleanup import clean_text
+from proper_nouns import extract_proper_nouns, remove_unwanted_proper_nouns
 
 app = Flask(__name__)
 
@@ -13,16 +15,25 @@ app = Flask(__name__)
 with open('source_text.txt', 'r') as file:
     text = file.read()
 
-text = remove_punctuation(text)
-tokens = text.split()
+# Clean the text and join the list into a string
+cleaned_text = ' '.join(clean_text(text))
+
+# Process the cleaned text
+cleaned_text = remove_punctuation(cleaned_text)
+tokens = cleaned_text.split()
 
 markov_chain = markov.build_second_order_markov_chain(tokens)
+
 
 with open('second_source.txt', 'r') as file:
     text_2 = file.read()
 
-text_2 = remove_punctuation(text_2)
-tokens = text_2.split()
+# Clean the text and join the list into a string
+cleaned_text_2 = ' '.join(clean_text(text_2))
+
+# Process the cleaned second text
+cleaned_text_2 = remove_punctuation(cleaned_text_2)
+tokens = cleaned_text_2.split()
 
 markov_chain_2 = markov.build_second_order_markov_chain(tokens)
 
