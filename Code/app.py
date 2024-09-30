@@ -9,6 +9,7 @@ import random
 from tokens import tokenize, remove_punctuation
 from cleanup import clean_text
 from proper_nouns import extract_proper_nouns, remove_unwanted_proper_nouns
+from combine_texts import combine_texts
 
 app = Flask(__name__)
 
@@ -23,45 +24,28 @@ def load_and_clean_text(file_path):
     return cleaned_tokens
 
 
-tokens = load_and_clean_text('source_text.txt')
-markov_chain = build_second_order_markov_chain(tokens)
+# Combine the two source texts
+combined_text = combine_texts('source_text.txt', 'second_source.txt')
 
-tokens_2 = load_and_clean_text('second_source.txt')
-markov_chain_2 = build_second_order_markov_chain(tokens_2)
+# Clean the combined text
+tokens = clean_text(combined_text)
+
+# Build a single Markov chain from the combined text
+markov_chain = build_second_order_markov_chain(tokens)
 
 
 @app.route("/")
 def home():
-    sentences = []
+    # Choose a random starting pair from all available pairs
+    if markov_chain:
+        start_pair = random.choice(list(markov_chain.keys()))
+        sentence = markov.random_walk(
+            markov_chain, start_pair, 30)
+    else:
+        sentence = "No sentences generated."
 
-    for chain in [markov_chain, markov_chain_2]:
-        for _ in range(5):
-            # Choose a random starting pair from all available pairs
-            if chain:
-                start_pair = random.choice(list(chain.keys()))
-                sentence = markov.random_walk(
-                    chain, start_pair, 50)  # Increased length to 50
-                sentences.append(sentence)
-
-    random_sentence = random.choice(
-        sentences) if sentences else "No sentences generated."
-    print(f"Generated sentence: {random_sentence}")
-    return render_template('index.html', sentence=random_sentence)
-
-    # # Join sentences into HTML
-    # html_content = "<h1>Second OrderMarkov Chain Generated Sentences</h1>"
-
-    # html_content += "<h2>Sentences from a 25, 058 token corpus:</h2>"
-    # for i, sentence in enumerate(sentences[:5], 1):
-    #     html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
-
-    # # Add a sub-header before the sixth sentence
-    # html_content += "<h2>Sentences from a 105, 563 token corpus:</h2>"
-
-    # # Add sentences from the second source
-    # for i, sentence in enumerate(sentences[5:], 6):
-    #     html_content += f"<p><strong>Sentence {i}:</strong> {sentence}</p>"
-    # return html_content
+    # print(f"Generated sentence: {sentence}")
+    return render_template('index.html', sentence=sentence)
 
 
 @app.route('/tweet', methods=['POST'])
