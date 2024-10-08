@@ -7,7 +7,10 @@ nlp = spacy.load('en_core_web_sm')
 words_to_remove = ['PG', 'Project', 'Gutenberg',
                    'Project', 'Literary', 'Archive', 'eBooks', 'ebook', 'ebooks', 'eBook', 'PROJECT', 'GUTENBERG', 'gutenberg']
 
-custom_proper_nouns = ['Gables', 'States', 'Gregor']
+custom_proper_nouns = ['Gables', 'States', 'Gregor', "Gregor's", "Anne's"]
+
+# Add common adjectives that are being misclassified
+common_adjectives = ['eyed', 'rapt', 'starry']
 
 
 def extract_proper_nouns(text: str) -> list:
@@ -24,7 +27,8 @@ def extract_proper_nouns(text: str) -> list:
     doc = nlp(text)
 
     # Extract proper nouns
-    proper_nouns = [token.text for token in doc if token.pos_ == 'PROPN']
+    proper_nouns = [token.text for token in doc if token.pos_ ==
+                    'PROPN' and token.text.lower() not in common_adjectives]
 
     # for token in doc:
     #     print(f"{token.text}: {token.pos_}")
@@ -75,7 +79,9 @@ if __name__ == "__main__":
     # file_path = 'second_source.txt'
     # with open(file_path, 'r') as file:
     #     text = file.read()
-    text = '“Anne Anne Anne Marilla Green Gables Gutenberg GUTENBERG Red Beyond The five-thirty train has been Gilbert Blythe Marilla in and gone half an hour ago,” answered that brisk official. “But there was a passenger dropped off for you--a little girl. She’s sitting Anne Anne Anne’s Gutenberg GUTENBERG out there on the shingles. I asked Gilbert’s her togo into the ladies’ waiting room, but she informed me gravely that she  preferred to stay outside. ‘There was more scope for imagination,’ she said. She’s a case, I should say.”'
+    # text = '“Anne Anne Anne Marilla Green Gables Gutenberg GUTENBERG Red Beyond The five-thirty train has been Gilbert Blythe Marilla in and gone half an hour ago,” answered that brisk official. “But there was a passenger dropped off for you--a little girl. She’s sitting Anne Anne Anne’s Gutenberg GUTENBERG out there on the shingles. I asked Gilbert’s her togo into the ladies’ waiting room, but she informed me gravely that she  preferred to stay outside. ‘There was more scope for imagination,’ she said. She’s a case, I should say.”'
+
+    text = "“You did just splendidly, Anne,” puffed Diana, recovering sufficiently to sit up and speak, for Anne, starry eyed and rapt, had not uttered a word."
 
     proper_nouns = extract_proper_nouns(text)
     # print(f"{proper_nouns}")

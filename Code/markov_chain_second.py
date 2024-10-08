@@ -61,7 +61,9 @@ def random_walk(markov_chain: dict, start_words: tuple, length=10) -> str:
 
     # Capitalize the first word of the sentence
     sentence[0] = sentence[0].capitalize()
-    if not sentence[-1].endswith(('.', '!', '?')):
+    if sentence[-1].endswith(','):
+        sentence[-1] = sentence[-1].replace(',', '') + '.'
+    elif not sentence[-1].endswith(('.', '!', '?')):
         sentence[-1] += '.'
 
     return ' '.join(sentence)
@@ -207,7 +209,8 @@ if __name__ == '__main__':
     print("\n")
     print("################### With source text #########################")
 
-    file_path = 'source_text.txt'
+    # file_path = 'source_text.txt'
+    file_path = 'Code/source_text.txt'
     with open(file_path, 'r') as file:
         text = file.read()
 
