@@ -3,25 +3,14 @@ from flask import Flask, render_template, request, redirect
 import twitter
 import markov_chain_second as markov
 import random
-from cleanup import clean_text
-from combine_texts import combine_texts
+import json
 import re
 
 app = Flask(__name__)
 
-
-def load_and_clean_text(file_path):
-    with open(file_path, 'r') as file:
-        text = file.read()
-    return clean_text(text)
-
-
-# Load and clean both source texts
-cleaned_tokens1 = load_and_clean_text('source_text.txt')
-cleaned_tokens2 = load_and_clean_text('second_source.txt')
-
-# Combine the cleaned tokens
-cleaned_tokens = cleaned_tokens1 + cleaned_tokens2
+# Load the pre-processed tokens
+with open('cleaned_tokens.json', 'r', encoding='utf-8') as f:
+    cleaned_tokens = json.load(f)
 
 # Build a Markov chain from the cleaned tokens
 markov_chain = markov.build_second_order_markov_chain(cleaned_tokens)
